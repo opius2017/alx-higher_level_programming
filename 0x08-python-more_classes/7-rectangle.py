@@ -3,12 +3,10 @@
 This module defines a Rectangle class
 """
 
-
 class Rectangle:
     """
     Rectangle class definition
     """
-
     number_of_instances = 0
     print_symbol = "#"
 
@@ -16,7 +14,6 @@ class Rectangle:
         """
         Initializes a Rectangle instance with a given width and height
         """
-
         self.width = width
         self.height = height
         type(self).number_of_instances += 1
@@ -69,8 +66,8 @@ class Rectangle:
         """
         Computes the perimeter of the Rectangle instance
         """
-        return 2 * (self.width + self.height)
-        if self.width != 0 and self.height != 0 else 0
+        return (2 * (self.width + self.height)
+                if self.width != 0 and self.height != 0 else 0)
 
     def __str__(self):
         """
