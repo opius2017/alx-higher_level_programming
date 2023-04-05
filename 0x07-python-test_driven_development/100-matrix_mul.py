@@ -1,70 +1,71 @@
 #!/usr/bin/python3
-"""
-This module contains a function that multiplies 2 matrices
-"""
+"""This module contain a function that multiplies two matrix"""
 
 
 def matrix_mul(m_a, m_b):
-    """This function multiplies two matrices
+    """matrix_mul function that multiplies two matrix
     Args:
-        m_a (list of lists of int/float): Matrix to be multiplied
-        m_b (list of lists of int/float): Matrix to be multiplied
-    Raises:
-        TypeError: If m_a or m_b is not a list
-        TypeError: If m_a or m_b is not a list of lists
-        TypeError: If one element of list of lists is not int/float
-        TypeError: If row of m_a or m_b are not the same size
-        ValueError: If m_a or m_b is empty
-        ValueError: If m_a and m_b cannot be multiplied
-    Returns:
-        A new list which is the outcome of the multiplication
+        m_a (list of lists): first matrix
+        m_b (list of lists): second matrix
     """
-
-    if not isinstance(m_a, list):
+    if type(m_a) != list:
         raise TypeError("m_a must be a list")
-    if not isinstance(m_b, list):
+    if type(m_b) != list:
         raise TypeError("m_b must be a list")
 
-    if not all(isinstance(row, list) for row in m_a):
-        raise TypeError("m_a must be a list of lists")
-    if not all(isinstance(row, list) for row in m_b):
-        raise TypeError("m_b must be a list of lists")
+    # variables to verify if both m_a and m_b can be multiplied
+    num_colum1 = 0
+    num_row2 = 0
 
-    if m_a == [] or m_a == [[]]:
+    # Check requirements for matrix m_a
+    if m_a == []:
         raise ValueError("m_a can't be empty")
-    if m_b == [] or m_b == [[]]:
+    for row1 in m_a:
+        if type(row1) != list:
+            raise TypeError("m_a must be a list of lists")
+        len1 = len(m_a[0])
+        if row1 == []:
+            raise ValueError("m_a can't be empty")
+        if len1 != len(row1):
+            raise TypeError("each row of m_a must be of the same size")
+        num_colum1 = len(row1)
+        for column1 in row1:
+            if type(column1) != int and type(column1) != float:
+                raise TypeError("m_a should contain only integers or floats")
+
+    # Check requirements for matrix m_b
+    if m_b == []:
         raise ValueError("m_b can't be empty")
+    for row2 in m_b:
+        if type(row2) != list:
+            raise TypeError("m_b must be a list of lists")
+        len2 = len(m_b[0])
+        if row2 == []:
+            raise ValueError("m_b can't be empty")
+        if len2 != len(row2):
+            raise TypeError("each row of m_b must be of the same size")
+        num_row2 += 1
+        for column2 in row2:
+            if type(column2) != int and type(column2) != float:
+                raise TypeError("m_b should contain only integers or floats")
 
-    if not all((isinstance(element, int) or isinstance(element, float))
-               for element in [number for row in m_a for number in row]):
-        raise TypeError("m_a should contain only integers or floats")
-    if not all((isinstance(element, int) or isinstance(element, float))
-               for element in [number for row in m_b for number in row]):
-        raise TypeError("m_b should contain only integers or floats")
-
-    if not all(len(row) == len(m_a[0]) for row in m_a):
-        raise TypeError("each row of m_a must should be of the same size")
-    if not all(len(row) == len(m_b[0]) for row in m_b):
-        raise TypeError("each row of m_b must should be of the same size")
-
-    if len(m_a[0]) != len(m_b):
+    # Check if the multiplication is posible
+    if num_colum1 != num_row2:
         raise ValueError("m_a and m_b can't be multiplied")
 
-    matrix1 = []
-    for i in range(len(m_b[0])):
-        my_row = []
-        for j in range(len(m_b)):
-            my_row.append(m_b[j][i])
-        matrix1.append(my_row)
+    mul_matrix = []
 
-    matrix2 = []
-    for row in m_a:
-        my_row = []
-        for column in matrix1:
-            product = 0
-            for m in range(len(matrix1[0])):
-                product += row[m] * column[m]
-            my_row.append(product)
-        matrix2.append(my_row)
+    for row_1 in m_a:
+        l = 0
+        l_row = []
+        while l < len(m_b[0]):
+            result = 0
+            k = 0
+            for column_1 in row_1:
+                result += column_1 * m_b[k][l]
+                k += 1
+            l_row.append(result)
+            l += 1
+        mul_matrix.append(l_row)
 
-    return matrix2
+    return mul_matrix
