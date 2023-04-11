@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ MyList is a subclass of the built-in list class. """
 
+
 class MyList(list):
     """ This class inherits all the attributes and methods of list """
 
