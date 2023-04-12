@@ -1,35 +1,40 @@
 #!/usr/bin/python3
 
+"""
+This script reads stdin line by line and computes metrics.
+
+Input format: <IP Address> - "GET HTTP/1.1" <status code> <file size>
+Each 10 lines and after a keyboard interruption (CTRL C):
+Total file size: File size: <total size>
+where <total size> is the sum of all previous (see input format above)
+Number of lines by status code:
+possible status code: 200, 301, 400, 401, 403, 404, 405 and 500
+if a status code doesn’t appear, don’t print anything for this status code
+format: <status code>: <number>
+status codes should be printed in ascending order
+"""
+
 import sys
 from collections import defaultdict
 
-# Define a defaultdict to count the number of status codes
-status_codes = defaultdict(int)
-
-# Initialize the total file size to 0
-total_file_size = 0
+total_size = 0
+status_counts = defaultdict(int)
+line_count = 0
 
 try:
-    # Loop over the lines in the input
-    for i, line in enumerate(sys.stdin):
-        # Parse the line and extract the relevant information
+    for line in sys.stdin:
+        line_count += 1
         parts = line.strip().split()
-        ip_address = parts[0]
         status_code = parts[-2]
-        file_size = int(parts[-1])
-
-        # Update the status code count and total file size
-        status_codes[status_code] += 1
-        total_file_size += file_size
-
-        # Print the statistics every 10 lines
-        if (i + 1) % 10 == 0:
-            print(f"Total file size: {total_file_size}")
-            for code in sorted(status_codes.keys()):
-                print(f"{code}: {status_codes[code]}")
-
+        total_size += int(parts[-1])
+        status_counts[status_code] += 1
+        if line_count == 10:
+            print(f"Total file size: {total_size}")
+            for code in sorted(status_counts.keys()):
+                print(f"{code}: {status_counts[code]}")
+            line_count = 0
+            status_counts.clear()
 except KeyboardInterrupt:
-    # Handle the keyboard interrupt (CTRL + C)
-    print(f"Total file size: {total_file_size}")
-    for code in sorted(status_codes.keys()):
-        print(f"{code}: {status_codes[code]}")
+    print(f"Total file size: {total_size}")
+    for code in sorted(status_counts.keys()):
+        print(f"{code}: {status_counts[code]}")
