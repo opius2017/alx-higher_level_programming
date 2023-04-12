@@ -19,7 +19,7 @@ class Student:
             attrs (list): A list of attribute names to retrieve.
 
         Returns:
-            dict: A dict containing the Student instance attributes.
+            dict: A dictionary containing the Student instance attributes.
         """
         if attrs is None:
             return self.__dict__
@@ -30,10 +30,10 @@ class Student:
 
     def reload_from_json(self, json):
         """
-        Replace attrib of Student instance with values from a dict.
+        Replaces all attributes of the Student instance.
 
         Args:
-            json (dict): A dict containing attrib names and values.
+            json (dict): A dictionary representation of a Student instance.
 
         Returns:
             None
