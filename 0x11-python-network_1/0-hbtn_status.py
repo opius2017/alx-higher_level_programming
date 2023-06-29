@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Fetches https://alx-intranet.hbtn.io/status."""
+"""Script that fetches https://alx-intranet.hbtn.io/status."""
 import urllib.request
 
 
