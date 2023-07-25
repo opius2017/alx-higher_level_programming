@@ -1,14 +1,16 @@
 #!/usr/bin/node
 
-const axios = require('axios');
-
+const request = require('request');
 const url = process.argv[2];
 
-axios.get(url)
-  .then(response => {
+request(url, function (err, response, body) {
+  if (err) {
+    console.log(err);
+  } else if (response.statusCode === 200) {
     const completed = {};
-    const tasks = response.data;
-    for (const task of tasks) {
+    const tasks = JSON.parse(body);
+    for (const i in tasks) {
+      const task = tasks[i];
       if (task.completed === true) {
         if (completed[task.userId] === undefined) {
           completed[task.userId] = 1;
@@ -18,7 +20,7 @@ axios.get(url)
       }
     }
     console.log(completed);
-  })
-  .catch(error => {
-    console.error(error.message);
-  });
+  } else {
+    console.log('An error occured. Status code: ' + response.statusCode);
+  }
+});
